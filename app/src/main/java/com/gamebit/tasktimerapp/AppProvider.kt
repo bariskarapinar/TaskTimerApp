@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteQueryBuilder
 import android.net.Uri
 import android.util.Log
 
-private val CONTENT_AUTHORITY = "com.gamebit.tasktimerapp.provider"
+const val CONTENT_AUTHORITY = "com.gamebit.tasktimerapp.provider"
 
 private const val TASKS = 100
 private const val TASKS_ID = 101
@@ -48,7 +48,8 @@ class AppProvider: ContentProvider() {
         TODO("Not yet implemented")
     }
 
-    override fun query(uri: Uri, projection: Array<out String>?, selection: String?, selectionArgs: Array<out String>?, sortOrder: String?): Cursor? {
+    override fun query(uri: Uri, projection: Array<out String>?, selection: String?, selectionArgs: Array<out String>?,
+                       sortOrder: String?): Cursor? {
         val match = uriMatcher.match(uri)
         val queryBuilder: SQLiteQueryBuilder = SQLiteQueryBuilder()
 
