@@ -31,10 +31,10 @@ class AppProvider: ContentProvider() {
         matcher.addURI(CONTENT_AUTHORITY, TaskContracts.TABLE_NAME, TASKS)
         matcher.addURI(CONTENT_AUTHORITY, "${TaskContracts.TABLE_NAME}/#", TASKS_ID)
 
-        /*matcher.addURI(CONTENT_AUTHORITY, TimingsContract.TABLE_NAME, TIMINGS)
+        matcher.addURI(CONTENT_AUTHORITY, TimingsContract.TABLE_NAME, TIMINGS)
         matcher.addURI(CONTENT_AUTHORITY, "${TimingsContract.TABLE_NAME}/#", TIMINGS_ID)
 
-        matcher.addURI(CONTENT_AUTHORITY, DurationsContract.TABLE_NAME, TASK_DURATIONS)
+        /*matcher.addURI(CONTENT_AUTHORITY, DurationsContract.TABLE_NAME, TASK_DURATIONS)
         matcher.addURI(CONTENT_AUTHORITY, "${DurationsContract.TABLE_NAME}/#", TASK_DURATIONS_ID)*/
 
         return matcher
@@ -45,7 +45,22 @@ class AppProvider: ContentProvider() {
     }
 
     override fun getType(uri: Uri): String? {
-        TODO("Not yet implemented")
+        val match = uriMatcher.match(uri)
+        return when (match) {
+            TASKS -> TaskContracts.CONTENT_TYPE
+
+            TASKS_ID -> TaskContracts.CONTENT_ITEM_TYPE
+
+            TIMINGS -> TimingsContract.CONTENT_TYPE
+
+            TIMINGS_ID -> TimingsContract.CONTENT_ITEM_TYPE
+
+            /*TASK_DURATIONS -> DurationsContract.CONTENT_TYPE
+
+            TASK_DURATIONS_ID -> DurationsContract.CONTENT_ITEM_TYPE*/
+
+            else -> throw IllegalArgumentException("unknown Uri: $uri")
+        }
     }
 
     override fun query(uri: Uri, projection: Array<out String>?, selection: String?, selectionArgs: Array<out String>?,
@@ -63,7 +78,7 @@ class AppProvider: ContentProvider() {
                 queryBuilder.appendWhereEscapeString("$taskId")
             }
 
-            /*TIMINGS -> queryBuilder.tables = TimingsContract.TABLE_NAME
+            TIMINGS -> queryBuilder.tables = TimingsContract.TABLE_NAME
 
             TIMINGS_ID -> {
                 queryBuilder.tables = TimingsContract.TABLE_NAME
@@ -72,7 +87,7 @@ class AppProvider: ContentProvider() {
                 queryBuilder.appendWhereEscapeString("$timingId")
             }
 
-            TASK_DURATIONS -> queryBuilder.tables = DurationsContract.TABLE_NAME
+            /*TASK_DURATIONS -> queryBuilder.tables = DurationsContract.TABLE_NAME
 
             TASK_DURATIONS_ID -> {
                 queryBuilder.tables = DurationsContract.TABLE_NAME
