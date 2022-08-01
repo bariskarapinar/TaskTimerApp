@@ -4,9 +4,11 @@ import android.content.ContentProvider
 import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
+import android.database.SQLException
 import android.database.sqlite.SQLiteQueryBuilder
 import android.net.Uri
 import android.util.Log
+import java.lang.IllegalStateException
 
 const val CONTENT_AUTHORITY = "com.gamebit.tasktimerapp.provider"
 
@@ -106,7 +108,35 @@ class AppProvider: ContentProvider() {
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
-        TODO("Not yet implemented")
+        val match = uriMatcher.match(uri)
+
+        val recordId: Long
+        val returnUri: Uri
+
+        when(match) {
+
+            TASKS -> {
+                val db = AppDatabase.getInstance(context!!).writableDatabase
+                recordId = db.insert(TaskContracts.TABLE_NAME, null, values)
+                if (recordId != -1L) {
+                    returnUri = TaskContracts.buildUriFromId(recordId)
+                } else {
+                    throw SQLException("Failed to insert, Uri was $uri")
+                }
+            }
+
+            TIMINGS -> {
+                val db = AppDatabase.getInstance(context!!).writableDatabase
+                recordId = db.insert(TimingsContract.TABLE_NAME, null, values)
+                if (recordId != -1L) {
+                    returnUri = TimingsContract.buildUriFromId(recordId)
+                } else {
+                    throw SQLException("Failed to insert, Uri was $uri")
+                }
+            }
+            else -> throw IllegalArgumentException("Unknown URI: $uri")
+        }
+        return returnUri
     }
 
     override fun update(uri: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<out String>?): Int {
