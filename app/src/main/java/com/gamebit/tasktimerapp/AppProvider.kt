@@ -54,12 +54,12 @@ class AppProvider: ContentProvider() {
         val queryBuilder: SQLiteQueryBuilder = SQLiteQueryBuilder()
 
         when (match) {
-            TASKS -> queryBuilder.tables = TasksContract.TABLE_NAME
+            TASKS -> queryBuilder.tables = TaskContracts.TABLE_NAME
 
             TASKS_ID -> {
-                queryBuilder.tables = TasksContract.TABLE_NAME
-                val taskId = TasksContract.getId(uri)
-                queryBuilder.appendWhereEscapeString("${TasksContract.Columns.ID} = $taskId")
+                queryBuilder.tables = TaskContracts.TABLE_NAME
+                val taskId = TaskContracts.getId(uri)
+                queryBuilder.appendWhere("${TaskContracts.Columns.ID} = $taskId")
             }
 
             /*TIMINGS -> queryBuilder.tables = TimingsContract.TABLE_NAME
@@ -81,7 +81,7 @@ class AppProvider: ContentProvider() {
             else -> throw IllegalArgumentException("Unknown URI: $uri")
         }
 
-        val db = AppDatabase.getInstance(context).readableDatabase
+        val db = context?.let { AppDatabase.getInstance(it).readableDatabase }
         val cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder)
 
         return cursor
