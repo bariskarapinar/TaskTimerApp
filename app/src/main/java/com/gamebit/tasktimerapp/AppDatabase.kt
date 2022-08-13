@@ -18,11 +18,11 @@ internal class AppDatabase private constructor(context: Context): SQLiteOpenHelp
 
     override fun onCreate(db: SQLiteDatabase) {
         Log.d(TAG, "onCreate Starts")
-        val sSQL = """CREATE TABLE ${TaskContracts.TABLE_NAME} (
-            ${TaskContracts.Columns.ID} INTEGER PRIMARY KEY NOT NULL, 
-            ${TaskContracts.Columns.TASKS_NAME} TEXT NOT NULL,
-            ${TaskContracts.Columns.TASKS_DESCRIPTION} TEXT,
-            ${TaskContracts.Columns.TASK_SORT_ORDER} INTEGER);""".replaceIndent(" ")
+        val sSQL = """CREATE TABLE ${TasksContract.TABLE_NAME} (
+            ${TasksContract.Columns.ID} INTEGER PRIMARY KEY NOT NULL, 
+            ${TasksContract.Columns.TASKS_NAME} TEXT NOT NULL,
+            ${TasksContract.Columns.TASKS_DESCRIPTION} TEXT,
+            ${TasksContract.Columns.TASK_SORT_ORDER} INTEGER);""".replaceIndent(" ")
         Log.d(TAG, sSQL)
         db.execSQL(sSQL)
     }

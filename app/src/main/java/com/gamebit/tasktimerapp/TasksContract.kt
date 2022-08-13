@@ -4,7 +4,7 @@ import android.content.ContentUris
 import android.net.Uri
 import android.provider.BaseColumns
 
-object TaskContracts {
+object TasksContract {
 
     internal const val TABLE_NAME = "Tasks"
     val CONTENT_URI: Uri = Uri.withAppendedPath(CONTENT_AUTHORITY_URI, TABLE_NAME)

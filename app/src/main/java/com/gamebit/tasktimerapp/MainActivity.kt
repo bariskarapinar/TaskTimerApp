@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,10 +17,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        val projection = arrayOf(TaskContracts.Columns.TASKS_NAME, TaskContracts.Columns.TASK_SORT_ORDER)
-        val sortColumn = TaskContracts.Columns.TASK_SORT_ORDER
+        val projection = arrayOf(TasksContract.Columns.TASKS_NAME, TasksContract.Columns.TASK_SORT_ORDER)
+        val sortColumn = TasksContract.Columns.TASK_SORT_ORDER
 
-        val cursor = contentResolver.query(TaskContracts.buildUriFromId(2), projection, null,null, sortColumn)
+        val cursor = contentResolver.query(TasksContract.buildUriFromId(2), projection, null,null, sortColumn)
         Log.d(TAG, "********************")
         cursor.use {
             while (it!!.moveToNext()) {
