@@ -1,6 +1,5 @@
 package com.gamebit.tasktimerapp
 
-import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -17,8 +16,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
-        testInsert()
 
         val projection = arrayOf(TasksContract.Columns.TASKS_NAME, TasksContract.Columns.TASK_SORT_ORDER)
         val sortColumn = TasksContract.Columns.TASK_SORT_ORDER
@@ -42,16 +39,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun testInsert() {
-        val values = ContentValues().apply {
-            put(TasksContract.Columns.TASKS_NAME, "New Task 1")
-            put(TasksContract.Columns.TASKS_DESCRIPTION, "Description 1")
-            put(TasksContract.Columns.TASK_SORT_ORDER, 2)
-        }
-
-        val uri = contentResolver.insert(TasksContract.CONTENT_URI, values)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -63,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.menumain_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
     }
