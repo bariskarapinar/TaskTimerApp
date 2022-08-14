@@ -1,5 +1,6 @@
 package com.gamebit.tasktimerapp
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -17,26 +18,38 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        testInsert()
+
         val projection = arrayOf(TasksContract.Columns.TASKS_NAME, TasksContract.Columns.TASK_SORT_ORDER)
         val sortColumn = TasksContract.Columns.TASK_SORT_ORDER
 
-        val cursor = contentResolver.query(TasksContract.buildUriFromId(2), projection, null,null, sortColumn)
+        val cursor = contentResolver.query(TasksContract.CONTENT_URI, null, null, null, sortColumn)
         Log.d(TAG, "********************")
         cursor.use {
             while (it!!.moveToNext()) {
                 // cycle through all records
                 with(cursor) {
-                    //val id = getLong(0)
-                    val name = getString(1)
-                    //val description = getString(2)
-                    val sortOrder = getString(3)
-                    val result = "Name: $name. Sort Order: $sortOrder."
+                    val id = this?.getLong(0)
+                    val name = this?.getString(1)
+                    val description = this?.getString(2)
+                    val sortOrder = this?.getString(3)
+                    val result = "ID: $id. Name: $name. Description: $description Sort Order: $sortOrder."
                     Log.d(TAG, "Result: $result")
                 }
             }
         }
         Log.d(TAG, "********************")
 
+    }
+
+    private fun testInsert() {
+        val values = ContentValues().apply {
+            put(TasksContract.Columns.TASKS_NAME, "New Task 1")
+            put(TasksContract.Columns.TASKS_DESCRIPTION, "Description 1")
+            put(TasksContract.Columns.TASK_SORT_ORDER, 2)
+        }
+
+        val uri = contentResolver.insert(TasksContract.CONTENT_URI, values)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
